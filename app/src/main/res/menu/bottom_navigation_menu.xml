@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.base444.android.headsuptaichung.MainActivity">
+    <item android:id="@+id/botton_location"
+          android:title="My Location"
+          android:icon="@drawable/icon_my_location"
+    />
+    <item android:id="@+id/botton_map"
+          android:title="Map"
+          android:icon="@drawable/icon_map"
+    />
+    <item android:id="@+id/botton_setting"
+          android:title="Setting"
+          android:icon="@drawable/icon_setting"
+        />
+</menu>
