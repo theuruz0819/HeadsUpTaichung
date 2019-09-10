@@ -31,16 +31,23 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.base444.android.headsuptaichung.fragments.AddLocationDialogFragment;
 import com.base444.android.headsuptaichung.model.ApplicationCase;
 import com.base444.android.headsuptaichung.model.CaseMarker;
+import com.base444.android.headsuptaichung.model.SaveLocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.maps.android.MarkerManager;
 import com.google.maps.android.clustering.ClusterManager;
 
 import org.json.JSONArray;
@@ -65,7 +72,8 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     protected ProgressDialog dialog;
     protected Snackbar snackbar;
     private Polygon poly;
-
+    private Circle circle;
+    private MarkerManager.Collection normalMarkersCollection;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +98,28 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     }
 
 
-    private void showAddLocationDialog(){
-        DialogFragment dialogFragment = new AddLocationDialogFragment();
+    private void showAddLocationDialog(final LatLng latLng){
+        DialogFragment dialogFragment = new AddLocationDialogFragment(new AddLocationDialogFragment.MarkerSaveInterFace() {
+            @Override
+            public void onSaveButtonClick(String name, String note) {
+                Marker melbourne = mMap.addMarker(new MarkerOptions().position(latLng).title(name).snippet(note)
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                if (melbourne != null) {
+                    SaveLocation saveLocation = new SaveLocation();
+                    saveLocation.setName(melbourne.getTitle());
+                    saveLocation.setName(melbourne.getSnippet());
+                    saveLocation.setLongitude(melbourne.getPosition().longitude);
+                    saveLocation.setLatitude(melbourne.getPosition().latitude);
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    realm.copyToRealm(saveLocation);
+                    realm.commitTransaction();
+                }
+            }
+        });
         dialogFragment.show(getSupportFragmentManager(),"");
+
     }
 
     private void getCaseDataFromGovApi() {
@@ -167,6 +194,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         googleMap.setOnCameraIdleListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mClusterManager);
         googleMap.setOnInfoWindowClickListener(mClusterManager);
+        normalMarkersCollection = mClusterManager.getMarkerManager().newCollection();
 
         Realm realm = Realm.getDefaultInstance();
         List<ApplicationCase> applicationCaseList = CaseMarkerFilter.getInstance().getCaseByFilter(realm);
@@ -175,11 +203,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
-                showAddLocationDialog();
-                //Marker melbourne = mMap.addMarker(new MarkerOptions().position(latLng).title("Point").snippet("Save1")
-                //        .icon(BitmapDescriptorFactory
-                //                .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-
+                showAddLocationDialog(latLng);
             }
         });
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -198,6 +222,21 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        normalMarkersCollection.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (circle != null) {
+                    circle.remove();
+                }
+                circle = mMap.addCircle(new CircleOptions()
+                    .center(marker.getPosition())
+                    .radius(500).strokeWidth(3.0f)
+                    .strokeColor(Color.RED)
+                    .fillColor(R.color.trans_blue));
+
+                return false;
+            }
+        });
     }
 
     private void loadCaseAddMarker(){
@@ -213,6 +252,23 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             }
         }
         mClusterManager.cluster();
+        showMySavedLocation(mMap);
+    }
+
+    private void showMySavedLocation(final GoogleMap map){
+        Realm realm = Realm.getDefaultInstance();
+        List<SaveLocation> saveLocations = realm.where(SaveLocation.class).findAll();
+        for (SaveLocation saveLocation : saveLocations) {
+//            Marker melbourne = mMap.addMarker(new MarkerOptions().position(new LatLng(saveLocation.getLatitude(), saveLocation.getLongitude()))
+//                    .title(saveLocation.getName()).snippet(saveLocation.getNote())
+//                    .icon(BitmapDescriptorFactory
+//                    .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+            normalMarkersCollection.addMarker(new MarkerOptions().position(new LatLng(saveLocation.getLatitude(), saveLocation.getLongitude()))
+                    .title(saveLocation.getName()).snippet(saveLocation.getNote())
+                    .icon(BitmapDescriptorFactory
+                            .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+
+        }
     }
 
     private void showMyLocation(final GoogleMap map){
@@ -220,7 +276,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         int permissionCheckCamera = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (permissionCheck == PackageManager.PERMISSION_GRANTED && permissionCheckCamera == PackageManager.PERMISSION_GRANTED) {
             map.setMyLocationEnabled(true);
-
         } else {
             Nammu.askForPermission(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}
                     , new PermissionCallback() {
