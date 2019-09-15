@@ -45,5 +45,31 @@
                 android:textSize="30sp"
                 android:layout_margin="5dp"
                 />
+        <TextView
+                android:id="@+id/map_config_range_info_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="鄰近區域範圍"
+                android:textSize="24sp"
+                android:layout_marginTop="10dp"
+                android:drawableEnd="@drawable/icons8_info_16"
+                android:drawablePadding="5dp"
+                />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+            >
+            <Spinner
+                    android:id="@+id/map_config_range_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="公尺"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

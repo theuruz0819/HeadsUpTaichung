@@ -55,6 +55,7 @@ public class AddLocationDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 if (markerSaveInterFace != null) {
                     markerSaveInterFace.onSaveButtonClick(nameEdt.getText().toString(), noteEdt.getText().toString());
+                    dismiss();
                 }
             }
         });

@@ -102,13 +102,14 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         DialogFragment dialogFragment = new AddLocationDialogFragment(new AddLocationDialogFragment.MarkerSaveInterFace() {
             @Override
             public void onSaveButtonClick(String name, String note) {
-                Marker melbourne = mMap.addMarker(new MarkerOptions().position(latLng).title(name).snippet(note)
+                Marker melbourne = normalMarkersCollection.addMarker(new MarkerOptions().position(latLng)
+                        .title(name).snippet(note)
                         .icon(BitmapDescriptorFactory
                                 .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 if (melbourne != null) {
                     SaveLocation saveLocation = new SaveLocation();
                     saveLocation.setName(melbourne.getTitle());
-                    saveLocation.setName(melbourne.getSnippet());
+                    saveLocation.setNote(melbourne.getSnippet());
                     saveLocation.setLongitude(melbourne.getPosition().longitude);
                     saveLocation.setLatitude(melbourne.getPosition().latitude);
                     Realm realm = Realm.getDefaultInstance();
@@ -197,7 +198,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         normalMarkersCollection = mClusterManager.getMarkerManager().newCollection();
 
         Realm realm = Realm.getDefaultInstance();
-        List<ApplicationCase> applicationCaseList = CaseMarkerFilter.getInstance().getCaseByFilter(realm);
+        CaseMarkerFilter caseMarkerFilter = CaseMarkerFilter.getInstance();
+        caseMarkerFilter.getFilterSetting(((MyApplication)getApplication()).getSettingPreferences());
+        List<ApplicationCase> applicationCaseList = caseMarkerFilter.getCaseByFilter(realm);
         Log.i("TAG", String.valueOf(applicationCaseList.size()));
         loadCaseAddMarker();
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -212,6 +215,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 if (poly != null){
                     poly.remove();
                 }
+                if (circle != null){
+                    circle.remove();
+                }
             }
         });
         showMyLocation(mMap);
@@ -222,6 +228,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        final int radius = ((MyApplication)getApplication()).getSettingPreferences().getFilterSettingRange();
         normalMarkersCollection.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -230,7 +237,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 }
                 circle = mMap.addCircle(new CircleOptions()
                     .center(marker.getPosition())
-                    .radius(500).strokeWidth(3.0f)
+                    .radius(radius).strokeWidth(3.0f)
                     .strokeColor(Color.RED)
                     .fillColor(R.color.trans_blue));
 
@@ -243,7 +250,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         mMap.clear();
         mClusterManager.clearItems();
         Realm realm = Realm.getDefaultInstance();
-        List<ApplicationCase> applicationCaseList = CaseMarkerFilter.getInstance().getCaseByFilter(realm);
+        CaseMarkerFilter caseMarkerFilter = CaseMarkerFilter.getInstance();
+        caseMarkerFilter.getFilterSetting(((MyApplication)getApplication()).getSettingPreferences());
+        List<ApplicationCase> applicationCaseList = caseMarkerFilter.getCaseByFilter(realm);
         Log.i("TAG", String.valueOf(applicationCaseList.size()));
         for (ApplicationCase applicationCase : applicationCaseList) {
             CaseMarker marker = createMarker(applicationCase);
@@ -385,6 +394,11 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         switch (menuItem.getItemId()) {
             case R.id.botton_setting:
                 MapConfigActivity.startActivity(this);
+                break;
+            case R.id.botton_location:
+                LocationListActivity.startActivity(this);
+                break;
+            default:
             break;
         }
         return false;
@@ -393,8 +407,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MapConfigActivity.REQUEST_CODE_CONFIG &&
-                resultCode == MapConfigActivity.RETURN_CODE_OK){
+        if (resultCode == MapConfigActivity.RETURN_CODE_OK){
             loadCaseAddMarker();
             Toast.makeText(this, "Update Completed", Toast.LENGTH_SHORT).show();
         }
