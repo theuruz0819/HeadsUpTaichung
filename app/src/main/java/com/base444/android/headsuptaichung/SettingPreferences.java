@@ -10,9 +10,21 @@ public class SettingPreferences extends Preferences<SettingPreferences> {
     public static final String FILTER_SETTING_IS_ON_GOING = "isOnGoingFilter";
     public static final String FILTER_SETTING_IS_SCHEDULE = "isScheduleFilter";
     public static final String FILTER_SETTING_SHOW_ALL = "showAllFilter";
+    public static final String LAST_UPDATE_TIME = "lastUpdateTime";
+
 
     SettingPreferences(SharedPreferences sharedPreferences) {
         super(sharedPreferences);
+    }
+
+    public long getLastUpdateTime(){
+        return sharedPreferences.getLong(LAST_UPDATE_TIME, 0);
+    }
+
+    public SettingPreferences setLastUpdateTime(long time) throws Exception{
+        ensureBeginEdit();
+        mEditor.putLong(FILTER_SETTING_RANGE, time);
+        return this;
     }
 
     public Integer getFilterSettingRange(){

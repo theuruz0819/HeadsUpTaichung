@@ -14,8 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,14 +54,14 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         showAll.setOnCheckedChangeListener(this);
 
         final List<String> rangeArray =
-                Arrays.asList(MapConfigActivity.this.getResources().getStringArray(R.array.range));
+                Arrays.asList(MapConfigActivity.this.getResources().getStringArray(R.array.radius_range));
         final SettingPreferences setting = ((MyApplication) getApplication()).getSettingPreferences();
         final Integer currentSettingRange = setting.getFilterSettingRange();
         int targetIndex = rangeArray.indexOf(String.valueOf(currentSettingRange));
 
-        Spinner spinner = findViewById(R.id.map_config_range_spinner);
+        Spinner spinner = findViewById(R.id.map_config_range_list_spinner);
         ArrayAdapter<CharSequence> lunchList = ArrayAdapter.createFromResource(MapConfigActivity.this,
-                R.array.range,
+                R.array.radius_range,
                 android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(lunchList);
         spinner.setSelection(targetIndex);

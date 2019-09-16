@@ -228,13 +228,14 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 return false;
             }
         });
-        final int radius = ((MyApplication)getApplication()).getSettingPreferences().getFilterSettingRange();
+
         normalMarkersCollection.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (circle != null) {
                     circle.remove();
                 }
+                int radius = ((MyApplication)getApplication()).getSettingPreferences().getFilterSettingRange();
                 circle = mMap.addCircle(new CircleOptions()
                     .center(marker.getPosition())
                     .radius(radius).strokeWidth(3.0f)
