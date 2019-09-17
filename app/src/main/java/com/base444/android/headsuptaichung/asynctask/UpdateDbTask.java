@@ -28,6 +28,7 @@ public class UpdateDbTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        Log.i("TAG3", "UpdateDbTask  doInBackground");
         AndroidNetworking.get("https://datacenter.taichung.gov.tw/swagger/OpenData/b77b2146-9e3f-4e5f-a31b-cef171c0285b")
                 .setPriority(Priority.HIGH)
                 .build()
@@ -60,12 +61,16 @@ public class UpdateDbTask extends AsyncTask<String, Integer, String> {
                                 }
                             }
                             realm.commitTransaction();
-
-                            Log.i("TAG", String.valueOf(counter));
                             realm.beginTransaction();
                             List<ApplicationCase> applicationCaseList = realm.where(ApplicationCase.class).findAll();
                             Log.i("TAG", String.valueOf(applicationCaseList.size()));
                             realm.commitTransaction();
+
+                            settingPreferences.beginEdit();
+                            settingPreferences.setLastUpdateTime(new Date().getTime());
+                            settingPreferences.commit();
+                            Log.i("TAG3", "UpdateDbTask  onPostExecute");
+
                         } catch (Exception e){
                             Log.e("TAG4", e.getLocalizedMessage());
 
@@ -82,10 +87,6 @@ public class UpdateDbTask extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        try {
-            settingPreferences.setLastUpdateTime(new Date().getTime());
-        } catch (Exception e) {
-            Log.e("UpdateDbTask", e.getMessage());
-        }
+
     }
 }

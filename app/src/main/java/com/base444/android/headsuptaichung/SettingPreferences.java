@@ -11,11 +11,23 @@ public class SettingPreferences extends Preferences<SettingPreferences> {
     public static final String FILTER_SETTING_IS_SCHEDULE = "isScheduleFilter";
     public static final String FILTER_SETTING_SHOW_ALL = "showAllFilter";
     public static final String LAST_UPDATE_TIME = "lastUpdateTime";
-
+    public static final String AUTO_UPDATE_ENABLE = "autoUpdateEnable";
 
     SettingPreferences(SharedPreferences sharedPreferences) {
         super(sharedPreferences);
     }
+
+
+    public Boolean getAutoUpdateEnable(){
+        return sharedPreferences.getBoolean(AUTO_UPDATE_ENABLE, false);
+    }
+
+    public SettingPreferences setAutoUpdateEnable(boolean enable) throws Exception{
+        ensureBeginEdit();
+        mEditor.putBoolean(AUTO_UPDATE_ENABLE, enable);
+        return this;
+    }
+
 
     public long getLastUpdateTime(){
         return sharedPreferences.getLong(LAST_UPDATE_TIME, 0);
@@ -23,7 +35,7 @@ public class SettingPreferences extends Preferences<SettingPreferences> {
 
     public SettingPreferences setLastUpdateTime(long time) throws Exception{
         ensureBeginEdit();
-        mEditor.putLong(FILTER_SETTING_RANGE, time);
+        mEditor.putLong(LAST_UPDATE_TIME, time);
         return this;
     }
 

@@ -8,6 +8,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
             android:name=".MyApplication"
@@ -17,7 +18,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".LocationListActivity"></activity>
+        <activity
+                android:name=".AlarmListActivity"
+                android:label="@string/title_activity_alarm_list"
+                android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".LocationListActivity" />
         <activity android:name=".MapConfigActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -43,8 +48,8 @@
 
         <service
                 android:name=".asynctask.CaseUpdateScheduleJobService"
-                android:permission="android.permission.BIND_JOB_SERVICE"
-                android:exported="true"/>
+                android:exported="true"
+                android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

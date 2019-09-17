@@ -1,6 +1,10 @@
 package com.base444.android.headsuptaichung;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +16,14 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.base444.android.headsuptaichung.asynctask.CaseUpdateScheduleJobService;
+
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class MapConfigActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
@@ -27,7 +36,8 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
     private CheckBox isSchedule;
     private CheckBox showAll;
     private TextView nearByRangeInfoText;
-
+    private ToggleButton autoUpdateToggle;
+    private TextView lastUpdateDate;
 
     public static void startActivity(Activity context) {
         Intent intent = new Intent(context, MapConfigActivity.class);
@@ -42,6 +52,9 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         isOnGoing = findViewById(R.id.map_config_on_going);
         isSchedule = findViewById(R.id.map_config_schedule);
         showAll = findViewById(R.id.map_config_all);
+        autoUpdateToggle = findViewById(R.id.map_config_auto_sync_toggle);
+        lastUpdateDate = findViewById(R.id.map_config_last_update_date);
+
         CaseMarkerFilter caseMarkerFilter = CaseMarkerFilter.getInstance();
         caseMarkerFilter.getFilterSetting(((MyApplication)getApplication()).getSettingPreferences());
         isStartToday.setChecked(caseMarkerFilter.isStart());
@@ -52,6 +65,7 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         isSchedule.setOnCheckedChangeListener(this);
         showAll.setChecked(caseMarkerFilter.isShowAll());
         showAll.setOnCheckedChangeListener(this);
+        autoUpdateToggle.setChecked(((MyApplication)getApplication()).getSettingPreferences().getAutoUpdateEnable());
 
         final List<String> rangeArray =
                 Arrays.asList(MapConfigActivity.this.getResources().getStringArray(R.array.radius_range));
@@ -86,7 +100,40 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
             }
         });
 
+        autoUpdateToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                SettingPreferences settingPreferences = ((MyApplication)getApplication()).getSettingPreferences();
+                settingPreferences.beginEdit();
+                try {
+                    settingPreferences.setAutoUpdateEnable(isCheck);
+                    JobScheduler jobScheduler = (JobScheduler)getApplicationContext()
+                            .getSystemService(JOB_SCHEDULER_SERVICE);
 
+                    if (isCheck) {
+                        ComponentName componentName = new ComponentName(MapConfigActivity.this,
+                                CaseUpdateScheduleJobService.class);
+
+                        JobInfo jobInfo = new JobInfo.Builder(CaseUpdateScheduleJobService.ID, componentName)
+                                .setPeriodic(AlarmManager.INTERVAL_HALF_HOUR).setRequiredNetworkType(
+                                        JobInfo.NETWORK_TYPE_NOT_ROAMING)
+                                .setPersisted(true).build();
+                        jobScheduler.schedule(jobInfo);
+                    } else {
+                        jobScheduler.cancel(CaseUpdateScheduleJobService.ID);
+                    }
+                    settingPreferences.commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        SettingPreferences settingPreferences = ((MyApplication)getApplication()).getSettingPreferences();
+        Long lastUpdate = settingPreferences.getLastUpdateTime();
+        if (lastUpdate != 0){
+            lastUpdateDate.setText("最後更新 : " + new Date(lastUpdate).toString());
+        }
     }
 
     @Override
