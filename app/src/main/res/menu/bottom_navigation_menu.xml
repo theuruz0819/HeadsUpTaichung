@@ -7,8 +7,8 @@
           android:icon="@drawable/icon_my_location"
     />
     <item android:id="@+id/botton_map"
-          android:title="Map"
-          android:icon="@drawable/icon_map"
+          android:title="Alarm"
+          android:icon="@drawable/icon_alarm"
     />
     <item android:id="@+id/botton_setting"
           android:title="Setting"

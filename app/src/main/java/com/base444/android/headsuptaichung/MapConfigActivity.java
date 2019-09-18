@@ -115,7 +115,7 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
                                 CaseUpdateScheduleJobService.class);
 
                         JobInfo jobInfo = new JobInfo.Builder(CaseUpdateScheduleJobService.ID, componentName)
-                                .setPeriodic(AlarmManager.INTERVAL_HALF_HOUR).setRequiredNetworkType(
+                                .setPeriodic(AlarmManager.INTERVAL_HALF_DAY).setRequiredNetworkType(
                                         JobInfo.NETWORK_TYPE_NOT_ROAMING)
                                 .setPersisted(true).build();
                         jobScheduler.schedule(jobInfo);
