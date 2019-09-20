@@ -9,15 +9,24 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.base444.android.headsuptaichung.adapter.AlarmListAdapter;
+import com.base444.android.headsuptaichung.model.AlarmItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+
+import io.realm.Realm;
 
 public class AlarmListActivity extends AppCompatActivity {
 
     static int REQUEST_CODE_CONFIG = 10001;
     static int RETURN_CODE_OK = 10002;
+
+    private RecyclerView recyclerView;
+    private AlarmListAdapter alarmListAdapter;
 
     public static void startActivity(Activity context) {
         Intent intent = new Intent(context, AlarmListActivity.class);
@@ -27,6 +36,10 @@ public class AlarmListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
+        recyclerView = findViewById(R.id.alarm_list_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        alarmListAdapter = new AlarmListAdapter();
+        recyclerView.setAdapter(alarmListAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -40,11 +53,20 @@ public class AlarmListActivity extends AppCompatActivity {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        AlarmItem alarmItem = new AlarmItem();
+                        alarmItem.setHour(hourOfDay);
+                        alarmItem.setMinute(minute);
+                        alarmItem.setEnable(true);
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        realm.copyToRealm(alarmItem);
+                        realm.commitTransaction();
+                        alarmListAdapter.dataUpdate();
+                        alarmListAdapter.notifyDataSetChanged();
                         Toast.makeText(AlarmListActivity.this, "現在時間是" + hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();
                     }
                 }, hour, minute, false).show();
             }
         });
     }
-
 }

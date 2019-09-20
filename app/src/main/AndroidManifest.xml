@@ -46,6 +46,12 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".receiver.AlarmReceiver">
+            <intent-filter>
+                <action android:name="activity_app" />
+            </intent-filter>
+        </receiver>
+
         <service
                 android:name=".asynctask.CaseUpdateScheduleJobService"
                 android:exported="true"

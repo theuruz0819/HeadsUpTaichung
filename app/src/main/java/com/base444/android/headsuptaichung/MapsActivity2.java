@@ -269,15 +269,10 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         Realm realm = Realm.getDefaultInstance();
         List<SaveLocation> saveLocations = realm.where(SaveLocation.class).findAll();
         for (SaveLocation saveLocation : saveLocations) {
-//            Marker melbourne = mMap.addMarker(new MarkerOptions().position(new LatLng(saveLocation.getLatitude(), saveLocation.getLongitude()))
-//                    .title(saveLocation.getName()).snippet(saveLocation.getNote())
-//                    .icon(BitmapDescriptorFactory
-//                    .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
             normalMarkersCollection.addMarker(new MarkerOptions().position(new LatLng(saveLocation.getLatitude(), saveLocation.getLongitude()))
                     .title(saveLocation.getName()).snippet(saveLocation.getNote())
                     .icon(BitmapDescriptorFactory
                             .defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-
         }
     }
 
@@ -398,6 +393,9 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 break;
             case R.id.botton_location:
                 LocationListActivity.startActivity(this);
+                break;
+            case R.id.botton_map:
+                AlarmListActivity.startActivity(this);
                 break;
             default:
             break;

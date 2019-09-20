@@ -12,7 +12,7 @@ import com.base444.android.headsuptaichung.model.AlarmItem;
 
 public class AlarmListViewHolder extends RecyclerView.ViewHolder{
     private TextView timeTextView;
-    private CheckBox enableCheckBox;
+    public CheckBox enableCheckBox;
     public AlarmListViewHolder(@NonNull View itemView) {
         super(itemView);
         timeTextView = itemView.findViewById(R.id.alarm_list_item_time_text);

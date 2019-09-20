@@ -3,6 +3,7 @@ package com.base444.android.headsuptaichung.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +32,14 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AlarmListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AlarmListViewHolder holder, final int position) {
         holder.setItemView(alarmItems.get(position));
+        holder.enableCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+                onCheckChange(alarmItems.get(position), isCheck);
+            }
+        });
     }
 
     @Override
@@ -40,10 +47,15 @@ public class AlarmListAdapter extends RecyclerView.Adapter<AlarmListViewHolder> 
         return alarmItems.size();
     }
 
+    public void dataUpdate(){
+        Realm realm = Realm.getDefaultInstance();
+        this.alarmItems = realm.where(AlarmItem.class).findAll();
+    }
+
     private void onCheckChange(AlarmItem alarmItem , boolean isCheck){
-        alarmItem.setEnable(isCheck);
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
+        alarmItem.setEnable(isCheck);
         realm.copyToRealmOrUpdate(alarmItem);
         realm.commitTransaction();
     }
