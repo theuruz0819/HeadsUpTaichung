@@ -38,7 +38,7 @@ public class AlarmListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_list);
         recyclerView = findViewById(R.id.alarm_list_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        alarmListAdapter = new AlarmListAdapter();
+        alarmListAdapter = new AlarmListAdapter(this);
         recyclerView.setAdapter(alarmListAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -61,6 +61,14 @@ public class AlarmListActivity extends AppCompatActivity {
                         realm.beginTransaction();
                         realm.copyToRealm(alarmItem);
                         realm.commitTransaction();
+                        Calendar calendar = Calendar.getInstance();
+                        if (calendar.get(Calendar.HOUR_OF_DAY) > alarmItem.getHour()){
+                            calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
+                        }
+                        calendar.set(Calendar.HOUR_OF_DAY, alarmItem.getHour());
+                        calendar.set(Calendar.MINUTE, alarmItem.getMinute());
+                        AlarmUtil.add_alarm(AlarmListActivity.this, calendar, alarmItem.getRequestId(), true);
+
                         alarmListAdapter.dataUpdate();
                         alarmListAdapter.notifyDataSetChanged();
                         Toast.makeText(AlarmListActivity.this, "現在時間是" + hourOfDay + ":" + minute, Toast.LENGTH_SHORT).show();

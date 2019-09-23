@@ -13,7 +13,7 @@ public class SettingPreferences extends Preferences<SettingPreferences> {
     public static final String LAST_UPDATE_TIME = "lastUpdateTime";
     public static final String AUTO_UPDATE_ENABLE = "autoUpdateEnable";
 
-    SettingPreferences(SharedPreferences sharedPreferences) {
+    public SettingPreferences(SharedPreferences sharedPreferences) {
         super(sharedPreferences);
     }
 

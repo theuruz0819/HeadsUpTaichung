@@ -1,7 +1,5 @@
 package com.base444.android.headsuptaichung;
 
-import android.util.Log;
-
 import com.base444.android.headsuptaichung.model.ApplicationCase;
 
 import java.util.Date;
@@ -35,22 +33,18 @@ public class CaseMarkerFilter {
     public List<ApplicationCase> getCaseByFilter(Realm realm){
         RealmQuery<ApplicationCase> result;
         if (isStart) {
-            Log.i("TAG3", "isStart" );
             result = realm.where(ApplicationCase.class).greaterThanOrEqualTo("dueDate", new Date()).and().equalTo("是否開工", "是");
         } else{
             result = realm.where(ApplicationCase.class).greaterThanOrEqualTo("dueDate", new Date());
         }
         if (isOnGoing) {
             result = result.or().lessThanOrEqualTo("startDate", new Date());
-            Log.i("TAG3", "isOnGoing" );
         }
         if (isSchedule){
             result = result.or().greaterThan("startDate", new Date());
-            Log.i("TAG3", "isSchedule" );
         }
         if (showAll){
             result = realm.where(ApplicationCase.class);
-            Log.i("TAG3", "showAll" );
         }
         return result.findAll();
     }

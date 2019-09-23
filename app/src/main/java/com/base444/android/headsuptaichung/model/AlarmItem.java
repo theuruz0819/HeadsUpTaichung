@@ -42,6 +42,10 @@ public class AlarmItem extends RealmObject {
         isEnable = enable;
     }
 
+    public int getRequestId(){
+        return hour * 100 + minute;
+    }
+
     public RealmList<String> getEnableDays() {
         return enableDays;
     }
