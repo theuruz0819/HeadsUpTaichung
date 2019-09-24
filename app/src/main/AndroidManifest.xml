@@ -52,6 +52,13 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".BootUpReceiver"
+                android:enabled="false">   //官方建議先設false要用時再true
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
         <service
                 android:name=".asynctask.CaseUpdateScheduleJobService"
                 android:exported="true"

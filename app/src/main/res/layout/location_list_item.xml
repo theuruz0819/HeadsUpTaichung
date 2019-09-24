@@ -41,5 +41,6 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:background="@drawable/icons8_delete_100"
         />
 </RelativeLayout>

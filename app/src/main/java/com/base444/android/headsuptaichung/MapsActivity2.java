@@ -408,7 +408,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == MapConfigActivity.RETURN_CODE_OK){
             loadCaseAddMarker();
-            Toast.makeText(this, "Update Completed", Toast.LENGTH_SHORT).show();
         }
     }
 }
