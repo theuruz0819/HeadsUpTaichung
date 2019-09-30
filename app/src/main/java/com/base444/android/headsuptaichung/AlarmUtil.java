@@ -22,13 +22,13 @@ public class AlarmUtil {
         Log.d("TAG3", "alarm add time: " + String.valueOf(cal.get(Calendar.MONTH)) + "." + String.valueOf(cal.get(Calendar.DATE)) + " " + String.valueOf(cal.get(Calendar.HOUR_OF_DAY)) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
 
         Intent intent = new Intent(context, AlarmReceiver.class);
-
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         intent.putExtra("title", "activity_app");
 
         PendingIntent pi = PendingIntent.getBroadcast(context, requestId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
-        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY ,pi);       //註冊鬧鐘
+        am.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), AlarmManager.INTERVAL_DAY ,pi);       //註冊鬧鐘
     }
 
     public static void cancel_alarm(Context context, int requestId) {

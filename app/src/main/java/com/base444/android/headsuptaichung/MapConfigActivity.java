@@ -6,11 +6,16 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -38,6 +43,7 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
     private TextView nearByRangeInfoText;
     private ToggleButton autoUpdateToggle;
     private TextView lastUpdateDate;
+    private Button powerSavingSettingBtn;
 
     public static void startActivity(Activity context) {
         Intent intent = new Intent(context, MapConfigActivity.class);
@@ -54,6 +60,7 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         showAll = findViewById(R.id.map_config_all);
         autoUpdateToggle = findViewById(R.id.map_config_auto_sync_toggle);
         lastUpdateDate = findViewById(R.id.map_config_last_update_date);
+        powerSavingSettingBtn = findViewById(R.id.map_config_power_saving_setting_btn);
 
         CaseMarkerFilter caseMarkerFilter = CaseMarkerFilter.getInstance();
         caseMarkerFilter.getFilterSetting(((MyApplication)getApplication()).getSettingPreferences());
@@ -133,6 +140,27 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         if (lastUpdate != 0){
             lastUpdateDate.setText("最後更新 : " + new Date(lastUpdate).toString());
         }
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            powerSavingSettingBtn.setVisibility(View.VISIBLE);
+        } else {
+            powerSavingSettingBtn.setVisibility(View.GONE);
+        }
+        powerSavingSettingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    Intent intent = new Intent();
+                    String packageName = getPackageName();
+                    PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+                    if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                        intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                        intent.setData(Uri.parse("package:" + packageName));
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+
     }
 
     @Override

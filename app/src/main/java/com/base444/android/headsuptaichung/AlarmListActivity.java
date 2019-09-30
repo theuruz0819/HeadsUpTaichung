@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ public class AlarmListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private AlarmListAdapter alarmListAdapter;
-
+    private Button backBtn;
     public static void startActivity(Activity context) {
         Intent intent = new Intent(context, AlarmListActivity.class);
         context.startActivityForResult(intent, REQUEST_CODE_CONFIG);
@@ -37,9 +38,18 @@ public class AlarmListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
         recyclerView = findViewById(R.id.alarm_list_recycler_view);
+        backBtn = findViewById(R.id.alarm_list_back_btn);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         alarmListAdapter = new AlarmListAdapter(this);
         recyclerView.setAdapter(alarmListAdapter);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

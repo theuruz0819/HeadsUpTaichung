@@ -95,5 +95,12 @@
                 android:textSize="14sp"
                 android:text=""
             />
+
+        <Button
+                android:id="@+id/map_config_power_saving_setting_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="省電設定"
+                />
     </LinearLayout>
 </RelativeLayout>

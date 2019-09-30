@@ -58,7 +58,7 @@ public class AlarmNearByTask extends AsyncTask {
                                 String temp2 = temp1.replace("中心點Y坐標","location_y");
                                 String temp3 = temp2.replace("施工範圍坐標","area_location");
                                 JSONObject jsonObject = new JSONObject(temp3);
-                                Log.i("TAG3", temp3);
+
                                 ApplicationCase mCase = new Gson().fromJson(response.get(i).toString(), ApplicationCase.class);
                                 if (jsonObject.get("location_x") != null) {
                                     mCase.setLocatoin_x(String.valueOf(jsonObject.get("location_x")));
