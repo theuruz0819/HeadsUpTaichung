@@ -18,7 +18,21 @@
             android:id="@+id/location_list_confirm_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/location_list_adview"
+            android:layout_margin="5dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:text="確定"
         />
+    <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/location_list_adview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-7927904947504617/3278334063">
+    </com.google.android.gms.ads.AdView>
 </RelativeLayout>

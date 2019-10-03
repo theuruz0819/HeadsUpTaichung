@@ -24,8 +24,10 @@
                 android:name=".AlarmListActivity"
                 android:label="@string/title_activity_alarm_list"
                 android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".LocationListActivity" />
-        <activity android:name=".MapConfigActivity" />
+        <activity android:name=".LocationListActivity"
+                 android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".MapConfigActivity"
+                 android:theme="@style/AppTheme.NoActionBar"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -65,6 +67,10 @@
                 android:name=".asynctask.CaseUpdateScheduleJobService"
                 android:exported="true"
                 android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-7927904947504617~1658609565"/>
     </application>
 
 </manifest>

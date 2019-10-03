@@ -3,15 +3,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.base444.android.headsuptaichung.MainActivity">
     <item android:id="@+id/botton_location"
-          android:title="My Location"
+          android:title="提醒地點"
           android:icon="@drawable/icon_my_location"
     />
     <item android:id="@+id/botton_map"
-          android:title="Alarm"
+          android:title="提醒"
           android:icon="@drawable/icon_alarm"
     />
     <item android:id="@+id/botton_setting"
-          android:title="Setting"
+          android:title="設定"
           android:icon="@drawable/icon_setting"
         />
 </menu>

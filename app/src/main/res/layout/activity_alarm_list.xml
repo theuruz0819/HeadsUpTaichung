@@ -14,10 +14,9 @@
 
     <Button
             android:id="@+id/alarm_list_back_btn"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/alarm_list_adview"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/fab_margin"
             android:background="@color/colorPrimary"
@@ -31,7 +30,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/alarm_list_adview"
             app:srcCompat="@android:drawable/ic_input_add" />
 
+    <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/alarm_list_adview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-7927904947504617/1610029170">
+    </com.google.android.gms.ads.AdView>
 </RelativeLayout>

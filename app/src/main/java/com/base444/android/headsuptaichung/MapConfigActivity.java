@@ -44,11 +44,13 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
     private ToggleButton autoUpdateToggle;
     private TextView lastUpdateDate;
     private Button powerSavingSettingBtn;
+    private Button backBtn;
 
     public static void startActivity(Activity context) {
         Intent intent = new Intent(context, MapConfigActivity.class);
         context.startActivityForResult(intent, REQUEST_CODE_CONFIG);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
         autoUpdateToggle = findViewById(R.id.map_config_auto_sync_toggle);
         lastUpdateDate = findViewById(R.id.map_config_last_update_date);
         powerSavingSettingBtn = findViewById(R.id.map_config_power_saving_setting_btn);
+        backBtn = findViewById(R.id.map_config_power_saving_back_btn);
 
         CaseMarkerFilter caseMarkerFilter = CaseMarkerFilter.getInstance();
         caseMarkerFilter.getFilterSetting(((MyApplication)getApplication()).getSettingPreferences());
@@ -156,11 +159,19 @@ public class MapConfigActivity extends AppCompatActivity implements CompoundButt
                         intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
                         intent.setData(Uri.parse("package:" + packageName));
                         startActivity(intent);
+                    } else {
+                        intent.setAction(Settings.ACTION_BATTERY_SAVER_SETTINGS);
+                        startActivity(intent);
                     }
                 }
             }
         });
-
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override

@@ -32,6 +32,9 @@ import com.base444.android.headsuptaichung.fragments.AddLocationDialogFragment;
 import com.base444.android.headsuptaichung.model.ApplicationCase;
 import com.base444.android.headsuptaichung.model.CaseMarker;
 import com.base444.android.headsuptaichung.model.SaveLocation;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -95,6 +98,11 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             }
         });
 
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
     }
 
 
