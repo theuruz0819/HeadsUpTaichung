@@ -3,14 +3,17 @@ package com.base444.android.headsuptaichung;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -236,6 +239,12 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+        mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<CaseMarker>() {
+            @Override
+            public void onClusterItemInfoWindowClick(CaseMarker caseMarker) {
+                showCaseDetailInfoDialog(caseMarker);
+            }
+        });
 
         normalMarkersCollection.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -409,6 +418,22 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
             break;
         }
         return false;
+    }
+
+    private void showCaseDetailInfoDialog(CaseMarker caseMarker){
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View v = inflater.inflate(R.layout.case_detial_info_dialog, null);
+
+        new AlertDialog.Builder(this)
+                .setTitle(caseMarker.getTitle())
+                .setView(v)
+                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
     }
 
     @Override
