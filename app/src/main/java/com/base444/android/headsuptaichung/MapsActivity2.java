@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -242,7 +243,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         mClusterManager.setOnClusterItemInfoWindowClickListener(new ClusterManager.OnClusterItemInfoWindowClickListener<CaseMarker>() {
             @Override
             public void onClusterItemInfoWindowClick(CaseMarker caseMarker) {
-                showCaseDetailInfoDialog(caseMarker);
+                showCaseDetailInfoDialog(caseMarker.applicationCase);
             }
         });
 
@@ -420,12 +421,17 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
         return false;
     }
 
-    private void showCaseDetailInfoDialog(CaseMarker caseMarker){
+    private void showCaseDetailInfoDialog(ApplicationCase applicationCase){
         LayoutInflater inflater = LayoutInflater.from(this);
         final View v = inflater.inflate(R.layout.case_detial_info_dialog, null);
-
+        ((TextView) v.findViewById(R.id.case_info_dialog_case_type)).setText(applicationCase.get案件類別());
+        ((TextView) v.findViewById(R.id.case_info_dialog_pipe_type)).setText(applicationCase.get管線工程類別());
+        ((TextView) v.findViewById(R.id.case_info_dialog_start_date_type)).setText(applicationCase.get核准起日());
+        ((TextView) v.findViewById(R.id.case_info_dialog_end_date_type)).setText(applicationCase.get核准迄日());
+        ((TextView) v.findViewById(R.id.case_info_dialog_area)).setText(applicationCase.get區域名稱());
+        ((TextView) v.findViewById(R.id.case_info_dialog_location)).setText(applicationCase.get地點());
         new AlertDialog.Builder(this)
-                .setTitle(caseMarker.getTitle())
+                .setTitle(applicationCase.get工程名稱())
                 .setView(v)
                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                     @Override

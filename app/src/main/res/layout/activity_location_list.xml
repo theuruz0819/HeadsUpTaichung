@@ -11,17 +11,17 @@
             android:id="@+id/location_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
+            android:layout_below="@+id/location_list_adview"
             android:layout_above="@+id/location_list_confirm_btn"
         />
     <Button
             android:id="@+id/location_list_confirm_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/location_list_adview"
             android:layout_margin="5dp"
             android:background="@color/colorPrimary"
             android:textColor="@color/white"
+            android:layout_alignParentBottom="true"
             android:textSize="20sp"
             android:text="確定"
         />
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             ads:adSize="BANNER"
             ads:adUnitId="ca-app-pub-7927904947504617/3278334063">
     </com.google.android.gms.ads.AdView>
