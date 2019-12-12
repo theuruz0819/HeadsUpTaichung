@@ -29,7 +29,7 @@ public class UpdateDbTask extends AsyncTask<String, Integer, String> {
     @Override
     protected String doInBackground(String... strings) {
         Log.i("TAG3", "UpdateDbTask  doInBackground");
-        AndroidNetworking.get("https://datacenter.taichung.gov.tw/swagger/OpenData/b77b2146-9e3f-4e5f-a31b-cef171c0285b")
+        AndroidNetworking.get("http://datacenter.taichung.gov.tw/swagger/OpenData/b77b2146-9e3f-4e5f-a31b-cef171c0285b")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

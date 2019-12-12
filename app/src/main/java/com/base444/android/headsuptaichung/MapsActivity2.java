@@ -36,9 +36,6 @@ import com.base444.android.headsuptaichung.fragments.AddLocationDialogFragment;
 import com.base444.android.headsuptaichung.model.ApplicationCase;
 import com.base444.android.headsuptaichung.model.CaseMarker;
 import com.base444.android.headsuptaichung.model.SaveLocation;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -101,12 +98,6 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
                 getCaseDataFromGovApi();
             }
         });
-
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
     }
 
 
@@ -137,7 +128,7 @@ public class MapsActivity2 extends FragmentActivity implements OnMapReadyCallbac
 
     private void getCaseDataFromGovApi() {
         showProgressDialog("Loading", "Please wait...");
-        AndroidNetworking.get("https://datacenter.taichung.gov.tw/swagger/OpenData/b77b2146-9e3f-4e5f-a31b-cef171c0285b")
+        AndroidNetworking.get("http://datacenter.taichung.gov.tw/swagger/OpenData/b77b2146-9e3f-4e5f-a31b-cef171c0285b")
                 .setPriority(Priority.HIGH)
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

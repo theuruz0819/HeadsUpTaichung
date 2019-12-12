@@ -17,7 +17,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.initialize(getApplicationContext(), HttpUtil.getUnsafeOkHttpClient());
         Realm.init(this);
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)

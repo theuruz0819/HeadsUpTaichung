@@ -15,6 +15,6 @@
         <item>1000</item>
     </string-array>
     <string name="title_activity_alarm_list" translatable="false">AlarmListActivity</string>
-    <string name="alarm_list_ad_id" translatable="false">ca-app-pub-7927904947504617/6700834017</string>
-    <string name="location_list_ad_id" translatable="false">ca-app-pub-7927904947504617/3278334063</string>
+    <string name="alarm_list_ad_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="location_list_ad_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

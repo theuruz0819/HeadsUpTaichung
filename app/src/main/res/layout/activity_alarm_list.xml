@@ -21,7 +21,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/fab_margin"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/buttonshape"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:text="返回" />
@@ -43,6 +43,8 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-7927904947504617/1610029170">
+
+            ads:adUnitId="@string/alarm_list_ad_id"
+            >
     </com.google.android.gms.ads.AdView>
 </RelativeLayout>

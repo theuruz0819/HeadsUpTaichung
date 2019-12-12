@@ -14,6 +14,8 @@ import com.base444.android.headsuptaichung.adapter.SavedLocationAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class LocationListActivity extends AppCompatActivity {
     static int RETURN_CODE_OK = 10002;
@@ -30,8 +32,12 @@ public class LocationListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_list);
 
-        MobileAds.initialize(this);
         AdView mAdView =  findViewById(R.id.location_list_adview);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
