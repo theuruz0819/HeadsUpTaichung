@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.base444.android.headsuptaichung.adapter.SavedLocationAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 public class LocationListActivity extends AppCompatActivity {
     static int RETURN_CODE_OK = 10002;
@@ -26,6 +29,12 @@ public class LocationListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_list);
+
+        MobileAds.initialize(this);
+        AdView mAdView =  findViewById(R.id.location_list_adview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
         confirmBtn = findViewById(R.id.location_list_confirm_btn);
         locationList = findViewById(R.id.location_list);
         locationList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));

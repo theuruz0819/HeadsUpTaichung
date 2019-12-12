@@ -15,6 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.base444.android.headsuptaichung.adapter.AlarmListAdapter;
 import com.base444.android.headsuptaichung.model.AlarmItem;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
@@ -39,6 +42,11 @@ public class AlarmListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm_list);
         recyclerView = findViewById(R.id.alarm_list_recycler_view);
         backBtn = findViewById(R.id.alarm_list_back_btn);
+
+        MobileAds.initialize(this);
+        AdView mAdView =  findViewById(R.id.alarm_list_adview);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         alarmListAdapter = new AlarmListAdapter(this);
