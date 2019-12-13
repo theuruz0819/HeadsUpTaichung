@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/fab_margin"
+            android:layout_margin="5dp"
             android:background="@drawable/buttonshape"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -43,7 +43,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             ads:adSize="BANNER"
-
+            android:layout_margin="10dp"
             ads:adUnitId="@string/alarm_list_ad_id"
             >
     </com.google.android.gms.ads.AdView>
