@@ -5,8 +5,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.androidnetworking.AndroidNetworking;
-import com.facebook.stetho.Stetho;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
 
@@ -19,11 +17,11 @@ public class MyApplication extends Application {
         super.onCreate();
         AndroidNetworking.initialize(getApplicationContext(), HttpUtil.getUnsafeOkHttpClient());
         Realm.init(this);
-        Stetho.initialize(
+        /*Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-                        .build());
+                        .build());*/
         mSettingPreferences = getSharedPreferences("Setting", MODE_PRIVATE);
 
     }

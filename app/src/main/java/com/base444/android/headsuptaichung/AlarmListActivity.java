@@ -30,7 +30,7 @@ public class AlarmListActivity extends AppCompatActivity {
 
     static int REQUEST_CODE_CONFIG = 10001;
     static int RETURN_CODE_OK = 10002;
-
+    static int RETURN_CODE_TEST = 123;
     private RecyclerView recyclerView;
     private AlarmListAdapter alarmListAdapter;
     private Button backBtn;
@@ -49,6 +49,7 @@ public class AlarmListActivity extends AppCompatActivity {
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
+
             }
         });
         AdRequest adRequest = new AdRequest.Builder().build();
